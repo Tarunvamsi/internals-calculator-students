@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internals Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="calculator">
+        <h2>Internals Calculator</h2>
+        
+        <table id="componentsTable">
+            <thead>
+                <tr>
+                    <th>Component Name</th>
+                    <th>Marks Obtained</th>
+                    <th>Maximum Marks</th>
+                    <th>Weightage</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Components will be dynamically added here -->
+            </tbody>
+        </table>
+
+        <button onclick="addComponent()">Add Component</button>
+        <button onclick="calculateInternal()">Get Total Internals</button>
+
+        <h3>Total Internal Marks:</h3>
+        <p id="totalMarks">0</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
