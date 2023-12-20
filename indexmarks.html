@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internals Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #calculator {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 20px;
+        }
+
+        #totalMarks {
+            font-size: 24px;
+            color: #2196f3;
+            margin-top: 10px;
+        }
+
+        .deleteButton {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .deleteButton:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <h2>Internals Calculator</h2>
+        
+        <table id="componentsTable">
+            <thead>
+                <tr>
+                    <th>Component Name</th>
+                    <th>Marks Obtained</th>
+                    <th>Maximum Marks</th>
+                    <th>Weightage</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Components will be dynamically added here -->
+            </tbody>
+        </table>
+
+        <button onclick="addComponent()">Add Component</button>
+        <button onclick="calculateInternal()">Get Total Internals</button>
+
+        <h3>Total Internal Marks:</h3>
+        <p id="totalMarks">0</p>
+    </div>
+
+    <script>
+        function addComponent() {
+            var componentsTableBody = document.querySelector("#componentsTable tbody");
+
+            // Check if required fields are filled
+            if (validateInputs()) {
+                var newRow = componentsTableBody.insertRow();
+                newRow.innerHTML = `
+                    <td><input type="text" class="subject" placeholder="Enter Component"></td>
+                    <td><input type="number" class="marks" placeholder="Marks obtained" required></td>
+                    <td><input type="number" class="maxMarks" placeholder="Max. Marks" required></td>
+                    <td><input type="number" class="weightage" placeholder="Weighate" required></td>
+                    <td><button class="deleteButton" onclick="deleteRow(this)">Delete</button></td>
+                `;
+            }
+        }
+
+        function deleteRow(button) {
+            var row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        function calculateInternal() {
+            // Check if required fields are filled
+            if (validateInputs()) {
+                var totalMarks = 0;
+                var rows = document.querySelectorAll("#componentsTable tbody tr");
+
+                rows.forEach(function (row) {
+                    var marks = parseFloat(row.querySelector(".marks").value) || 0;
+                    var maxMarks = parseFloat(row.querySelector(".maxMarks").value) || 1;
+                    var weightage = parseFloat(row.querySelector(".weightage").value) || 0;
+
+                    // Check if Marks Obtained is greater than Maximum Marks
+                    if (marks > maxMarks) {
+                        alert("Marks Obtained cannot be greater than Maximum Marks.");
+                        return;
+                    }
+
+                    totalMarks += (marks / maxMarks) * weightage;
+                });
+
+                document.getElementById("totalMarks").innerText = totalMarks.toFixed(2);
+            }
+        }
+
+        function validateInputs() {
+            var rows = document.querySelectorAll("#componentsTable tbody tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var marks = rows[i].querySelector(".marks").value.trim();
+                var maxMarks = rows[i].querySelector(".maxMarks").value.trim();
+                var weightage = rows[i].querySelector(".weightage").value.trim();
+
+                if (marks === "" || maxMarks === "" || weightage === "") {
+                    alert("Please fill in all required fields.");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>
