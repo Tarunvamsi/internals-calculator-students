@@ -75,3 +75,21 @@ h3 {
 .deleteButton:hover {
     background-color: #d32f2f;
 }
+
+@media only screen and (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    #calculator {
+        padding: 10px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    table {
+        overflow-x: auto;
+    }
+}
