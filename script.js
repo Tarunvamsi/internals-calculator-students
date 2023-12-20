@@ -8,7 +8,7 @@ function addComponent() {
             <td><input type="text" class="subject" placeholder="Enter Component"></td>
             <td><input type="number" class="marks" placeholder="Marks obtained" required></td>
             <td><input type="number" class="maxMarks" placeholder="Max. Marks" required></td>
-            <td><input type="number" class="weightage" placeholder="Weighate" required></td>
+            <td><input type="number" class="weightage" placeholder="Weightage" required></td>
             <td><button class="deleteButton" onclick="deleteRow(this)">Delete</button></td>
         `;
     }
@@ -23,6 +23,7 @@ function calculateInternal() {
     // Check if required fields are filled
     if (validateInputs()) {
         var totalMarks = 0;
+        var totalWeightage = 0;
         var rows = document.querySelectorAll("#componentsTable tbody tr");
 
         rows.forEach(function (row) {
@@ -37,9 +38,11 @@ function calculateInternal() {
             }
 
             totalMarks += (marks / maxMarks) * weightage;
+            totalWeightage += weightage;
         });
 
-        document.getElementById("totalMarks").innerText = totalMarks.toFixed(2);
+        var resultMessage = `Your internal score is ${totalMarks.toFixed(2)}/${totalWeightage}`;
+        document.getElementById("totalMarks").innerText = resultMessage;
     }
 }
 
