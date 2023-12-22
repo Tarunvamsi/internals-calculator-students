@@ -43,10 +43,6 @@ function calculateInternal() {
 
         var resultMessage = `Your internal score is ${totalMarks.toFixed(2)}/${totalWeightage}`;
         document.getElementById("totalMarks").innerText = resultMessage;
-
-        // Update the link with the template
-        var linkTemplate = encodeURIComponent(getMarksTemplate());
-        document.getElementById("link").innerText = `Use this link to update marks: ${window.location.href}?template=${linkTemplate}`;
     }
 }
 
@@ -66,55 +62,3 @@ function validateInputs() {
 
     return true;
 }
-
-function getMarksTemplate() {
-    var template = [];
-    var rows = document.querySelectorAll("#componentsTable tbody tr");
-
-    rows.forEach(function (row) {
-        var componentName = row.querySelector(".subject").value;
-        var marks = row.querySelector(".marks").value;
-        var maxMarks = row.querySelector(".maxMarks").value;
-        var weightage = row.querySelector(".weightage").value;
-
-        template.push({
-            componentName: componentName,
-            marks: marks,
-            maxMarks: maxMarks,
-            weightage: weightage
-        });
-    });
-
-    return JSON.stringify(template);
-}
-
-function generateLink() {
-    var linkTemplate = encodeURIComponent(getMarksTemplate());
-    document.getElementById("link").innerText = `Use this link to update marks: ${window.location.href}?template=${linkTemplate}`;
-}
-
-
-// Function to extract template from the URL and populate the table
-function loadMarksFromTemplate() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var templateParam = urlParams.get('template');
-
-    if (templateParam) {
-        var template = JSON.parse(decodeURIComponent(templateParam));
-
-        template.forEach(function (item) {
-            var componentsTableBody = document.querySelector("#componentsTable tbody");
-            var newRow = componentsTableBody.insertRow();
-            newRow.innerHTML = `
-                <td><input type="text" class="subject" value="${item.componentName || ''}"></td>
-                <td><input type="number" class="marks" value="${item.marks || 0}" required></td>
-                <td><input type="number" class="maxMarks" value="${item.maxMarks || 1}" required></td>
-                <td><input type="number" class="weightage" value="${item.weightage || 0}" required></td>
-                <td><button class="deleteButton" onclick="deleteRow(this)">Delete</button></td>
-            `;
-        });
-    }
-}
-
-// Call this function on page load to load marks from the URL template
-loadMarksFromTemplate();
